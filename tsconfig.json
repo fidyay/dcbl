@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "webpack.config.js", "dist/*"],
+  "exclude": ["node_modules", "webpack.config.js", "dist/*", "*.test.ts", "*.spec.ts"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
