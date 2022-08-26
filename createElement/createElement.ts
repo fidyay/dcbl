@@ -1,23 +1,23 @@
-interface Props {
+interface ParametersProps {
+    [prop: string]: any
+}
+
+interface ElementProps {
+    children: Child[],
     [prop: string]: any
 }
 
 interface DecibelElement {
     type: string,
-    props: {
-        children: Child[],
-        [prop: string]: any
-    }
+    props: ElementProps
 }
 
 type Child = DecibelElement | string
 
-export const createElement = (type: string, props: Props, ...children: Child[]): DecibelElement => {
+export const createElement = (type: string, props: ParametersProps | null, ...children: Child[]): DecibelElement => {
+    const elementProps = props ? {...props, children} : {children} as ElementProps
     return {
         type,
-        props: {
-            ...props,
-            children
-        }
+        props: elementProps
     }
 }

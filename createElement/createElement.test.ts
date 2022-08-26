@@ -1,7 +1,7 @@
 import { createElement } from "./createElement"
 
 test('Creates a div element', () => {
-    expect(createElement('div', {}, 'Hello, World')).toEqual({
+    expect(createElement('div', null, 'Hello, World')).toEqual({
         type: 'div',
         props: {
             children: ['Hello, World']
@@ -21,8 +21,8 @@ test('Creates link with shref', () => {
 
 test('Can create element trees', () => {
    const p1 = createElement('p', {style: {color: 'red'}}, 'Some text')
-   const p2 = createElement('p', {}, 'Some text 2')
-   const div = createElement('div', {}, p1, p2, 'End')
+   const p2 = createElement('p', null, 'Some text 2')
+   const div = createElement('div', null, p1, p2, 'End')
    expect(div).toEqual({
         type: 'div',
         props: {
