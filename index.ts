@@ -1,1 +1,1 @@
-export const a = (n: number): number => ++n
+export { createElement } from "./createElement/createElement"
