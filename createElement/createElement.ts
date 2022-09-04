@@ -1,10 +1,10 @@
 interface ParametersProps {
-    [prop: string]: any
+    [prop: string]: unknown
 }
 
 interface ElementProps {
     children: Child[],
-    [prop: string]: any
+    [prop: string]: unknown
 }
 
 interface DecibelElement {
