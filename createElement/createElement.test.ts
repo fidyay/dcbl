@@ -1,48 +1,48 @@
-import { createElement } from './createElement';
+import { createElement } from "./createElement";
 
-test('Creates a div element', () => {
-  expect(createElement('div', null, 'Hello, World')).toEqual({
-    type: 'div',
+test("Creates a div element", () => {
+  expect(createElement("div", null, "Hello, World")).toEqual({
+    type: "div",
     props: {
-      children: ['Hello, World']
+      children: ["Hello, World"]
     }
   });
 });
 
-test('Creates link with shref', () => {
+test("Creates link with shref", () => {
   expect(
-    createElement('a', { href: 'https://ru.wikipedia.org/' }, 'Wikipedia')
+    createElement("a", { href: "https://ru.wikipedia.org/" }, "Wikipedia")
   ).toEqual({
-    type: 'a',
+    type: "a",
     props: {
-      href: 'https://ru.wikipedia.org/',
-      children: ['Wikipedia']
+      href: "https://ru.wikipedia.org/",
+      children: ["Wikipedia"]
     }
   });
 });
 
-test('Can create element trees', () => {
-  const p1 = createElement('p', { style: { color: 'red' } }, 'Some text');
-  const p2 = createElement('p', null, 'Some text 2');
-  const div = createElement('div', null, p1, p2, 'End');
+test("Can create element trees", () => {
+  const p1 = createElement("p", { style: { color: "red" } }, "Some text");
+  const p2 = createElement("p", null, "Some text 2");
+  const div = createElement("div", null, p1, p2, "End");
   expect(div).toEqual({
-    type: 'div',
+    type: "div",
     props: {
       children: [
         {
-          type: 'p',
+          type: "p",
           props: {
-            style: { color: 'red' },
-            children: ['Some text']
+            style: { color: "red" },
+            children: ["Some text"]
           }
         },
         {
-          type: 'p',
+          type: "p",
           props: {
-            children: ['Some text 2']
+            children: ["Some text 2"]
           }
         },
-        'End'
+        "End"
       ]
     }
   });
