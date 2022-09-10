@@ -1,2 +1,2 @@
 export { default as ClassComponent } from "./ClassComponent/ClassComponent";
-export { createElement } from "./createElement/createElement";
+export { default as createElement } from "./createElement/createElement";

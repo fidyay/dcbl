@@ -1,4 +1,4 @@
-import { createElement } from "./createElement";
+import createElement from "./createElement";
 
 test("Creates a div element", () => {
   expect(createElement("div", null, "Hello, World")).toEqual({

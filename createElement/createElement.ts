@@ -1,4 +1,4 @@
-interface ParametersProps {
+export interface ParametersProps {
   [prop: string]: unknown;
 }
 
@@ -7,14 +7,14 @@ interface ElementProps {
   [prop: string]: unknown;
 }
 
-interface DecibelElement {
+export interface DecibelElement {
   type: string;
   props: ElementProps;
 }
 
 type Child = DecibelElement | string;
 
-export const createElement = (
+const createElement = (
   type: string,
   props: ParametersProps | null,
   ...children: Child[]
@@ -27,3 +27,5 @@ export const createElement = (
     props: elementProps
   };
 };
+
+export default createElement;
