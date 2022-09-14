@@ -1,3 +1,4 @@
+import ClassComponent from "../ClassComponent/ClassComponent";
 export interface ParametersProps {
   [prop: string]: unknown;
 }
@@ -15,17 +16,20 @@ export interface DecibelElement {
 type Child = DecibelElement | string;
 
 const createElement = (
-  type: string,
+  type: string | (new (props: ElementProps) => ClassComponent),
   props: ParametersProps | null,
   ...children: Child[]
-): DecibelElement => {
+): DecibelElement | ClassComponent => {
   const elementProps = props
     ? { ...props, children }
     : ({ children } as ElementProps);
-  return {
-    type,
-    props: elementProps
-  };
+  if (typeof type === "string") {
+    return {
+      type,
+      props: elementProps
+    };
+  }
+  return new type(elementProps);
 };
 
 export default createElement;
