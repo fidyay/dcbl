@@ -1,31 +1,26 @@
-export interface ParametersProps {
-  [prop: string]: unknown;
+import DOMElementTemplate from "./DOMElementTemplate/DOMElementTemplate";
+import type RemoveField from "../typeManipulation/removeField";
+import type {
+  DOMElementType,
+  DOMElementPropsType
+} from "./DOMElementTemplate/DOMElementTemplate";
+
+export type childrenType =
+  | DOMElementTemplate<keyof HTMLElementTagNameMap>
+  | string;
+
+function createElement<T extends DOMElementType>(
+  type: T,
+  props: RemoveField<DOMElementPropsType<T>, "children">,
+  children: childrenType[] = []
+): DOMElementTemplate<T> {
+  // ts cannot transfer type RemoveField<DOMElementPropsType<T>, "children"> to DOMElementPropsType<T>
+  const elementProps = {
+    ...props,
+    children
+  } as unknown as DOMElementPropsType<T>;
+  const el = new DOMElementTemplate(type, elementProps);
+  return el;
 }
-
-interface ElementProps {
-  children: Child[];
-  [prop: string]: unknown;
-}
-
-export interface DecibelElement {
-  type: string;
-  props: ElementProps;
-}
-
-type Child = DecibelElement | string;
-
-const createElement = (
-  type: string,
-  props: ParametersProps | null,
-  ...children: Child[]
-): DecibelElement => {
-  const elementProps = props
-    ? { ...props, children }
-    : ({ children } as ElementProps);
-  return {
-    type,
-    props: elementProps
-  };
-};
 
 export default createElement;
