@@ -1,9 +1,7 @@
 import DOMElementTemplate from "./DOMElementTemplate/DOMElementTemplate";
-import type RemoveField from "../typeManipulation/removeField";
-import type {
-  DOMElementType,
-  DOMElementPropsType
-} from "./DOMElementTemplate/DOMElementTemplate";
+import type { DOMElementPropsType } from "./DOMElementTemplate/DOMElementTemplate";
+
+export type DOMElementType = keyof HTMLElementTagNameMap;
 
 export type childrenType =
   | DOMElementTemplate<keyof HTMLElementTagNameMap>
@@ -11,10 +9,10 @@ export type childrenType =
 
 function createElement<T extends DOMElementType>(
   type: T,
-  props: RemoveField<DOMElementPropsType<T>, "children">,
+  props: JSX.IntrinsicElements[T],
   children: childrenType[] = []
 ): DOMElementTemplate<T> {
-  // ts cannot transfer type RemoveField<DOMElementPropsType<T>, "children"> to DOMElementPropsType<T>
+  // ts cannot transfer type RemoveFields<DOMElementPropsType<T>, "children"> to DOMElementPropsType<T>
   const elementProps = {
     ...props,
     children

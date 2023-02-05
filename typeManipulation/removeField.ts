@@ -1,4 +1,4 @@
-type RemoveField<Type, Field extends string> = {
-  [Property in keyof Type as Exclude<Property, Field>]: Type[Property];
+type RemoveFields<Type, Fields> = {
+  [Property in keyof Type as Exclude<Property, Fields>]: Type[Property];
 };
-export default RemoveField;
+export default RemoveFields;

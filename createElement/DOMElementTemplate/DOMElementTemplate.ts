@@ -1,10 +1,6 @@
-import type { childrenType } from "../createElement";
-import type Optionate from "../../typeManipulation/optionate";
-import type SetField from "../../typeManipulation/setField";
-export type DOMElementType = keyof HTMLElementTagNameMap;
-export type DOMElementPropsType<T extends DOMElementType> = Optionate<
-  SetField<HTMLElementTagNameMap[T], "children", childrenType[]>
->;
+import type { childrenType, DOMElementType } from "../createElement";
+export type DOMElementPropsType<T extends DOMElementType> =
+  JSX.IntrinsicElements[T] & { children?: childrenType[] };
 
 class DOMElementTemplate<T extends DOMElementType> {
   public type: T;
