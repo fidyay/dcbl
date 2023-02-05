@@ -1,4 +1,3 @@
-import type { DOMElementPropsType } from "./createElement/DOMElementTemplate/DOMElementTemplate";
 import type Optionate from "./typeManipulation/optionate";
 import type RemoveFields from "./typeManipulation/removeFields";
 
