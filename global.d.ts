@@ -1,17 +1,101 @@
-import type Optionate from "./typeManipulation/optionate";
-import type RemoveFields from "./typeManipulation/removeFields";
+import createElement from "./createElement/createElement";
 
-type MakeIETypes<Elements> = {
-  [Property in keyof Elements]: Optionate<
-    RemoveFields<Elements[Property]>,
-    "addEventListener" | "removeEventListener" | "children"
-  >;
+type excludedFields =
+  | "addEventListener"
+  | "appendChild"
+  | "attributes"
+  | "NamedNodeMap"
+  | "blur"
+  | "childElementCount"
+  | "childNodes"
+  | "NodeList"
+  | "children"
+  | "HTMLCollection"
+  | "classList"
+  | "click"
+  | "clientHeight"
+  | "clientLeft"
+  | "clientTop"
+  | "clientWidth"
+  | "cloneNode"
+  | "closest"
+  | "compareDocumentPosition"
+  | "contains"
+  | "contentEditable"
+  | "firstChild"
+  | "firstElementChild"
+  | "focus"
+  | "getAttribute"
+  | "getAttributeNode"
+  | "getBoundingClientRect"
+  | "getElementsByClassName"
+  | "getElementsByTagName"
+  | "hasAttribute"
+  | "hasAttributes"
+  | "hasChildNodes"
+  | "innerHTML"
+  | "innerText"
+  | "insertAdjacentElement"
+  | "insertAdjacentHTML"
+  | "insertAdjacentText"
+  | "insertBefore"
+  | "isContentEditable"
+  | "isDefaultNamespace"
+  | "isEqualNode"
+  | "isSameNode"
+  | "isSupported"
+  | "Deprecated"
+  | "lastChild"
+  | "lastElementChild"
+  | "matches"
+  | "namespaceURI"
+  | "nextSibling"
+  | "nextElementSibling"
+  | "nodeName"
+  | "nodeType"
+  | "nodeValue"
+  | "normalize"
+  | "offsetHeight"
+  | "offsetWidth"
+  | "offsetLeft"
+  | "offsetParent"
+  | "offsetTop"
+  | "outerHTML"
+  | "outerText"
+  | "ownerDocument"
+  | "parentNode"
+  | "parentElement"
+  | "previousSibling"
+  | "previousElementSibling"
+  | "querySelector"
+  | "querySelectorAll"
+  | "remove"
+  | "removeAttribute"
+  | "removeAttributeNode"
+  | "removeChild"
+  | "removeEventListener"
+  | "replaceChild"
+  | "scrollHeight"
+  | "scrollIntoView"
+  | "scrollLeft"
+  | "scrollTop"
+  | "scrollWidth"
+  | "setAttribute"
+  | "setAttributeNode"
+  | "tagName"
+  | "textContent";
+
+type OptionateAndRemove<Type, Fields> = {
+  [Property in keyof Type as Exclude<Property, Fields>]?: Type[Property];
+};
+
+type MakeIETypes<Type> = {
+  [Element in keyof Type]: OptionateAndRemove<Type[Element], excludedFields>;
 };
 
 declare global {
   namespace JSX {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface IntrinsicElements extends MakeIETypes<HTMLElementTagNameMap> {}
+    type IntrinsicElements = MakeIETypes<HTMLElementTagNameMap>;
 
     interface ElementAttributesProperty {
       props; // specify the property name to use
