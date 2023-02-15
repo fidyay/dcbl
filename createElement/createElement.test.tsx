@@ -1,8 +1,29 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import createElement from "./createElement";
+import createElement, { childrenType } from "./createElement";
+import Component from "../Components/Component";
 
-// TODO typescript thinks that props type is any and there is no JSX result type
-
-const i = <button></button>;
-
-test("1", () => expect(1).toBe(1));
+describe("checks without JSX", () => {
+  const el = createElement("a", { href: "https://google.com" }, "Text");
+  test("element type is correct", () => {
+    expect(el.type).toBe("a");
+  });
+  test("link is correct", () => {
+    expect(el.props.href).toBe("https://google.com");
+  });
+  test("child is a Text", () => {
+    const children = el.props.children as childrenType[];
+    expect(children[0]).toBe("Text");
+  });
+  class Button extends Component {
+    constructor(props: { maxNumber: number }) {
+      super(props);
+    }
+    render(): childrenType {
+      return createElement(
+        "button",
+        { onclick: () => this.props.maxNumber },
+        "Button"
+      );
+    }
+  }
+  const comp = createElement(Button, { maxNumber: 5 });
+});

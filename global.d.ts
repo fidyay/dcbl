@@ -1,4 +1,4 @@
-import createElement from "./createElement/createElement";
+import createElement, { childrenType } from "./createElement/createElement";
 
 type excludedFields =
   | "addEventListener"
@@ -90,10 +90,13 @@ type OptionateAndRemove<Type, Fields> = {
 };
 
 type MakeIETypes<Type> = {
-  [Element in keyof Type]: OptionateAndRemove<Type[Element], excludedFields>;
+  [Element in keyof Type]: OptionateAndRemove<Type[Element], excludedFields> & {
+    children?: childrenType;
+  };
 };
 
 declare global {
+  createElement = typeof createElement;
   namespace JSX {
     type IntrinsicElements = MakeIETypes<HTMLElementTagNameMap>;
 
