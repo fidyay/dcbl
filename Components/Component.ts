@@ -1,35 +1,38 @@
 import { childrenType } from "../createElement/createElement";
 import ComponentManager from "./ComponentManager";
 
-export interface BasicPropsAndStateInterface {
-  [key: string]: unknown;
-}
+export type BasicPropsAndStateInterface = Record<string, unknown>;
 
-abstract class Component {
-  props: BasicPropsAndStateInterface;
-  state: BasicPropsAndStateInterface = {};
-  constructor(props: BasicPropsAndStateInterface) {
+type settingStateFunction<S, P> = (state: S, props: P) => S | Promise<S>;
+
+abstract class Component<
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  P extends BasicPropsAndStateInterface = {},
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  S extends BasicPropsAndStateInterface = {}
+> {
+  props: P;
+  state!: S;
+  constructor(props: P) {
     this.props = props;
+    if (!this.state) {
+      const defaultState = {};
+      this.state = defaultState as S;
+    }
   }
   private _manager?: ComponentManager;
   set manager(m: ComponentManager) {
     this._manager = m;
   }
-  protected async setState(
-    newState:
-      | BasicPropsAndStateInterface
-      | ((
-          state: BasicPropsAndStateInterface,
-          props: BasicPropsAndStateInterface
-        ) => BasicPropsAndStateInterface)
-  ) {
-    if (typeof newState !== "function") {
+  protected async setState(newState: S | settingStateFunction<S, P>) {
+    if (typeof newState === "object") {
       this.state = newState;
-    } else {
-      if (newState.constructor.name === "AsyncFunction") {
-        this.state = await newState(this.state, this.props);
+    } else if (typeof newState === "function") {
+      const updatedState = newState(this.state, this.props);
+      if (updatedState instanceof Promise) {
+        this.state = await updatedState;
       } else {
-        this.state = newState(this.state, this.props);
+        this.state = updatedState;
       }
     }
     this._manager?.rerenderComponent();
