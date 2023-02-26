@@ -1,4 +1,7 @@
-import type { childrenType, DOMElementType } from "../createElement";
+import type {
+  childrenType,
+  DOMElementType
+} from "../createElement/createElement";
 export type DOMElementPropsType<T extends DOMElementType> =
   JSX.IntrinsicElements[T] & { children?: childrenType };
 
