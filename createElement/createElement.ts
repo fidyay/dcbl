@@ -1,5 +1,5 @@
-import DOMElementTemplate from "./DOMElementTemplate/DOMElementTemplate";
-import type { DOMElementPropsType } from "./DOMElementTemplate/DOMElementTemplate";
+import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
+import type { DOMElementPropsType } from "../DOMElementTemplate/DOMElementTemplate";
 import ComponentManager from "../Components/ComponentManager";
 import Component, {
   BasicPropsAndStateInterface
@@ -23,9 +23,11 @@ type GetComponentPropsType<C extends typeof Component> = RemoveFields<
   "children"
 >;
 type GetComponentChildrenType<C extends typeof Component> =
-  ConstructorParameters<C>[0]["children"] extends Array<childrenType>
-    ? ConstructorParameters<C>[0]["children"]
-    : ConstructorParameters<C>[0]["children"][];
+  "children" extends keyof ConstructorParameters<C>[0]
+    ? ConstructorParameters<C>[0]["children"] extends Array<childrenType>
+      ? ConstructorParameters<C>[0]["children"]
+      : [ConstructorParameters<C>[0]["children"]]
+    : [];
 
 function createElement<T extends DOMElementType>(
   type: T,
