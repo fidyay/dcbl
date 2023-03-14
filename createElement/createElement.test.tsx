@@ -1,5 +1,6 @@
 import createElement, { childrenType } from "./createElement";
 import Component from "../Components/Component";
+import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
 
 describe("checks without JSX", () => {
   const el = createElement("a", { href: "https://google.com" }, "Text");
@@ -13,17 +14,35 @@ describe("checks without JSX", () => {
     const children = el.props.children as childrenType[];
     expect(children[0]).toBe("Text");
   });
-  class Button extends Component {
-    constructor(props: { maxNumber: number }) {
+
+  type Props = {
+    maxNumber: number;
+  };
+  class Button extends Component<Props> {
+    constructor(props: Props) {
       super(props);
     }
-    render(): childrenType {
+    render() {
       return createElement(
         "button",
-        { onclick: () => this.props.maxNumber },
+        { onclick: () => console.log(this.props.maxNumber) },
         "Button"
       );
     }
   }
-  const comp = createElement(Button, { maxNumber: 5 });
+  const comp = createElement(Button, { maxNumber: 1 });
+  test("creates component", () => {
+    expect(comp.component).toBeInstanceOf(Button);
+  });
+  const renderedOutput =
+    comp.component.render() as DOMElementTemplate<"button">;
+  test("renders button", () => {
+    expect(renderedOutput.type).toBe("button");
+  });
+  test("props are valid", () => {
+    expect(comp.component.props.maxNumber).toBe(1);
+  });
 });
+
+// TODO typings for JSX components and JSX tests
+// TODO test state functionality in Components and maybe add lifecycle methods

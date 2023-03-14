@@ -1,15 +1,13 @@
 import { childrenType } from "../createElement/createElement";
 import ComponentManager from "./ComponentManager";
 
-export type BasicPropsAndStateInterface = Record<string, unknown>;
+export type BasicPropsAndStateInterface = object;
 
 type settingStateFunction<S, P> = (state: S, props: P) => S | Promise<S>;
 
 abstract class Component<
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  P extends BasicPropsAndStateInterface = {},
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  S extends BasicPropsAndStateInterface = {}
+  P extends BasicPropsAndStateInterface = BasicPropsAndStateInterface,
+  S extends BasicPropsAndStateInterface = BasicPropsAndStateInterface
 > {
   props: P;
   state!: S;
@@ -20,8 +18,8 @@ abstract class Component<
       this.state = defaultState as S;
     }
   }
-  private _manager?: ComponentManager;
-  set manager(m: ComponentManager) {
+  private _manager?: ComponentManager<this>;
+  set manager(m: ComponentManager<this>) {
     this._manager = m;
   }
   protected async setState(newState: S | settingStateFunction<S, P>) {

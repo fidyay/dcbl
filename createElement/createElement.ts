@@ -1,21 +1,17 @@
 import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
 import type { DOMElementPropsType } from "../DOMElementTemplate/DOMElementTemplate";
 import ComponentManager from "../Components/ComponentManager";
-import Component, {
-  BasicPropsAndStateInterface
-} from "../Components/Component";
+import Component from "../Components/Component";
 import RemoveFields from "../typeManipulation/removeField";
 
 export type DOMElementType = keyof HTMLElementTagNameMap;
 
 export type childrenType =
-  | DOMElementTemplate<keyof HTMLElementTagNameMap>
+  | DOMElementTemplate<DOMElementType>
   | string
-  | ComponentManager
+  | ComponentManager<Component>
   | Array<
-      | DOMElementTemplate<keyof HTMLElementTagNameMap>
-      | string
-      | ComponentManager
+      DOMElementTemplate<DOMElementType> | string | ComponentManager<Component>
     >;
 
 type GetComponentPropsType<C extends typeof Component> = RemoveFields<
@@ -29,36 +25,41 @@ type GetComponentChildrenType<C extends typeof Component> =
       : [ConstructorParameters<C>[0]["children"]]
     : [];
 
-function createElement<T extends DOMElementType>(
-  type: T,
-  props: JSX.IntrinsicElements[T],
+function createElement<E extends DOMElementType>(
+  el: E,
+  props: JSX.IntrinsicElements[E],
   ...children: childrenType[]
-): DOMElementTemplate<T>;
-function createElement<C extends typeof Component>(
-  type: C,
+): DOMElementTemplate<E>;
+function createElement<C extends typeof Component<any, any>>(
+  comp: C,
   props: GetComponentPropsType<C>,
   ...children: GetComponentChildrenType<C>
-): ComponentManager;
-function createElement<C extends typeof Component>(
-  type: string | C,
-  props: GetComponentPropsType<C> | JSX.IntrinsicElements[DOMElementType],
-  ...children: childrenType[] | GetComponentChildrenType<C>
+): ComponentManager<InstanceType<C>>;
+function createElement(
+  type: DOMElementType | typeof Component,
+  props:
+    | JSX.IntrinsicElements[DOMElementType]
+    | GetComponentPropsType<typeof Component>,
+  ...children: childrenType[] | GetComponentChildrenType<typeof Component>
 ) {
   if (typeof type === "string") {
-    const elementProps = {
+    const domElProps = {
       ...props,
       children
-    } as unknown as DOMElementPropsType<DOMElementType>;
-    const elType = type as DOMElementType;
-    const el = new DOMElementTemplate(elType, elementProps);
+    } as DOMElementPropsType<DOMElementType>;
+    const el = new DOMElementTemplate(type, domElProps);
     return el;
   } else {
-    // ts thinks that type is an abstract class
-    const cstr = type as unknown as new (
-      props: BasicPropsAndStateInterface
+    const compProps = { ...props, children } as ConstructorParameters<
+      typeof Component
+    >[0];
+    const constr = type as new (
+      props: ConstructorParameters<typeof Component>[0]
     ) => Component;
-    const component = new cstr({ ...props, children }) as Component;
-    return new ComponentManager(component);
+    const comp = new constr(compProps);
+    const cm = new ComponentManager(comp);
+    comp.manager = cm;
+    return cm;
   }
 }
 

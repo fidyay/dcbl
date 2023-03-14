@@ -4,13 +4,13 @@ import createElement from "../createElement/createElement";
 import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
 
 describe("testing components state implementation", () => {
-  type Props = {
+  interface Props {
     href: string;
     visits: number;
-  };
-  type State = {
+  }
+  interface State {
     visits: number;
-  };
+  }
   let checking: "object" | "function" | "async" | undefined;
   class Link extends Component {
     state: State;
@@ -60,7 +60,7 @@ describe("testing components state implementation", () => {
     }
   }
   let link: Link;
-  let cm: ComponentManager;
+  let cm: ComponentManager<Link>;
   let el: DOMElementTemplate<"a">;
   let click: () => void;
   beforeEach(() => {
