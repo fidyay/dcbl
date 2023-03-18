@@ -1,5 +1,10 @@
-import createElement, { childrenType } from "./createElement/createElement";
+import createElement, {
+  childrenType,
+  DOMElementType
+} from "./createElement/createElement";
 import Component from "./Components/Component";
+import DOMElementTemplate from "./DOMElementTemplate/DOMElementTemplate";
+import ComponentManager from "./Components/ComponentManager";
 
 type excludedFields =
   | "addEventListener"
@@ -99,6 +104,10 @@ type MakeIETypes<Type> = {
 declare global {
   createElement = typeof createElement;
   namespace JSX {
+    type Element =
+      | DOMElementTemplate<DOMElementType>
+      | ComponentManager<Component<any, any>>;
+
     type ElementClass = Component;
 
     type IntrinsicElements = MakeIETypes<HTMLElementTagNameMap>;
