@@ -1,4 +1,5 @@
 import createElement, { childrenType } from "./createElement/createElement";
+import Component from "./Components/Component";
 
 type excludedFields =
   | "addEventListener"
@@ -98,6 +99,8 @@ type MakeIETypes<Type> = {
 declare global {
   createElement = typeof createElement;
   namespace JSX {
+    type ElementClass = Component;
+
     type IntrinsicElements = MakeIETypes<HTMLElementTagNameMap>;
 
     interface ElementAttributesProperty {
