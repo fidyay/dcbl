@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing tree creation creates anchor element 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <a
+      href="https://google.com"
+    >
+      Google
+    </a>
+  </div>
+</body>
+`;
+
+exports[`testing tree creation creates text node 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    sample text
+  </div>
+</body>
+`;
+
+exports[`testing tree creation inserts component tree 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      Clicks: 
+      0
+      <button>
+        +1
+      </button>
+    </div>
+  </div>
+</body>
+`;

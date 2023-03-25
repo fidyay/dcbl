@@ -3,9 +3,10 @@ import type {
   DOMElementType
 } from "../createElement/createElement";
 export type DOMElementPropsType<T extends DOMElementType> =
-  JSX.IntrinsicElements[T] & { children?: childrenType };
+  JSX.IntrinsicElements[T] & { children?: childrenType[] };
 
 class DOMElementTemplate<T extends DOMElementType> {
+  public DOMEl!: HTMLElement;
   public type: T;
   public props: DOMElementPropsType<T>;
   constructor(type: T, props: DOMElementPropsType<T> = {}) {

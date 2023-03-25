@@ -86,5 +86,4 @@ describe("checks with jsx", () => {
     expect(comp.component.props.maxNumber).toBe(1);
   });
 });
-// TODO typings for JSX components and JSX tests
 // TODO test state functionality in Components and maybe add lifecycle methods
