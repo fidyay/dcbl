@@ -5,6 +5,7 @@ import createElement, {
 import Component from "./Components/Component";
 import DOMElementTemplate from "./DOMElementTemplate/DOMElementTemplate";
 import ComponentManager from "./Components/ComponentManager";
+import Optionate from "./typeManipulation/optionate";
 
 type excludedFields =
   | "addEventListener"
@@ -89,15 +90,26 @@ type excludedFields =
   | "setAttribute"
   | "setAttributeNode"
   | "tagName"
-  | "textContent";
+  | "textContent"
+  | "style";
 
 type OptionateAndRemove<Type, Fields> = {
   [Property in keyof Type as Exclude<Property, Fields>]?: Type[Property];
 };
 
+type MakeStylesType<Styles> = {
+  [Property in Extract<keyof Styles, string> as Exclude<
+    Property,
+    "length" | "parentRule"
+  >]?: string;
+};
+
+export type Styles = MakeStylesType<CSSStyleDeclaration>;
+
 type MakeIETypes<Type> = {
   [Element in keyof Type]: OptionateAndRemove<Type[Element], excludedFields> & {
     children?: childrenType;
+    style?: Styles;
   };
 };
 

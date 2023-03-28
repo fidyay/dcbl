@@ -2,6 +2,9 @@ import ComponentManager from "../Components/ComponentManager";
 import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
 import { childrenType, DOMElementType } from "../createElement/createElement";
 import Component from "../Components/Component";
+import Optionate from "../typeManipulation/optionate";
+import RemoveFields from "../typeManipulation/removeField";
+import { Styles } from "../global";
 
 type EventType = (this: Element, ev: Event) => any;
 class VirtualDOM {
@@ -24,6 +27,13 @@ class VirtualDOM {
           for (const child of children) {
             this.createTree(child, el);
           }
+        } else if (attr === "style") {
+          const styles = child.props[attr] as Styles;
+          const stylesKeys = Object.keys(styles) as (keyof Styles)[];
+          for (const style of stylesKeys) {
+            const elStyles = el.style as unknown as { [key: string]: string };
+            elStyles[style] = styles[style] as string;
+          }
         } else {
           el.setAttribute(attr, child.props[attr] as any);
         }
@@ -45,7 +55,6 @@ class VirtualDOM {
   ) {
     if (!rootDOMElement) {
       rootDOMElement = document.createElement("div");
-      // TODO use data attribute
       rootDOMElement.id = "decibel-root";
       document.body.append(rootDOMElement);
     }

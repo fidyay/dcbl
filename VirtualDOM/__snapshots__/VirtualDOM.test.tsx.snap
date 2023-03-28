@@ -26,16 +26,14 @@ exports[`testing tree creation creates text node 1`] = `
 
 exports[`testing tree creation inserts component tree 1`] = `
 <body>
-  <div
-    id="decibel-root"
-  >
-    <div>
-      Clicks: 
-      0
-      <button>
-        +1
-      </button>
-    </div>
+  <div>
+    Clicks: 
+    0
+    <button
+      style="color: rgb(255, 255, 255);"
+    >
+      +1
+    </button>
   </div>
 </body>
 `;

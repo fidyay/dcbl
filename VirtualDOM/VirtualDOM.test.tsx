@@ -8,7 +8,11 @@ class Button extends Component {
     super(props);
   }
   render() {
-    return <button onclick={this.props.onClickListener}>+1</button>;
+    return (
+      <button style={{ color: "#fff" }} onclick={this.props.onClickListener}>
+        +1
+      </button>
+    );
   }
 }
 
@@ -48,7 +52,7 @@ describe("testing tree creation", () => {
     expect(document.body).toMatchSnapshot();
   });
   test("inserts component tree", () => {
-    vd.createTreeFromRoot(<Clicker />);
+    vd.createTreeFromRoot(<Clicker />, document.body);
     expect(document.body).toMatchSnapshot();
   });
 });
