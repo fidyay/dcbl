@@ -1,14 +1,92 @@
 import ComponentManager from "../Components/ComponentManager";
-import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
+import DOMElementTemplate, {
+  DOMElementPropsType
+} from "../DOMElementTemplate/DOMElementTemplate";
 import { childrenType, DOMElementType } from "../createElement/createElement";
 import Component from "../Components/Component";
-import Optionate from "../typeManipulation/optionate";
-import RemoveFields from "../typeManipulation/removeField";
 import { Styles } from "../global";
 
 type EventType = (this: Element, ev: Event) => any;
 class VirtualDOM {
   DOMRoot!: HTMLElement;
+  checkProps(
+    oldProps: any,
+    newProps: any,
+    oldElementTemplate?: DOMElementTemplate<DOMElementType>
+  ) {
+    const oldPropsKeys = Object.keys(oldProps);
+    const newPropsKeys = Object.keys(newProps);
+    const allPropsKeys = new Set([...oldPropsKeys, ...newPropsKeys]);
+    let changed = false;
+    for (const prop of allPropsKeys) {
+      if (prop === "style" && oldElementTemplate) {
+        const oldStyles = oldProps.style;
+        const newStyles = newProps.style;
+        const allStyles = new Set([
+          ...Object.keys(oldStyles),
+          ...Object.keys(newStyles)
+        ]) as Set<keyof Styles>;
+        for (const style of allStyles) {
+          if (!Object.is(newStyles[style], oldStyles[style])) {
+            if (newStyles[style] === undefined && oldStyles[style]) {
+              delete oldStyles[style];
+              /* 
+                According to MDN documentation a style declaration is reset by setting it to null or an empty string,
+                but typescript does not allow it in either way.
+              */
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              oldElementTemplate.DOMEl.style[style] = null;
+            } else {
+              oldStyles[style] = newStyles[style];
+              oldElementTemplate.DOMEl.style[style] = newStyles[style];
+            }
+          }
+        }
+      } else if (!Object.is(newProps[prop], oldProps[prop])) {
+        changed = true;
+        // deleting props
+        if (newProps[prop] === undefined && oldProps[prop]) {
+          if (oldElementTemplate) {
+            const attr = prop as keyof DOMElementPropsType<DOMElementType>;
+            if (attr.slice(0, 2) === "on") {
+              const event = attr.slice(2) as keyof HTMLElementEventMap;
+              const eventListener = oldProps[attr] as EventType;
+              oldElementTemplate.DOMEl.removeEventListener(
+                event,
+                eventListener
+              );
+            } else {
+              oldElementTemplate.DOMEl.removeAttribute(attr);
+            }
+          }
+          delete oldProps[prop];
+        } else {
+          // setting other values
+          if (oldElementTemplate) {
+            const attr = prop as keyof DOMElementPropsType<DOMElementType>;
+            if (attr.slice(0, 2) === "on") {
+              const event = attr.slice(2) as keyof HTMLElementEventMap;
+              const oldEventListener = oldProps[attr] as EventType;
+              const newEventListener = newProps[attr] as EventType;
+              oldElementTemplate.DOMEl.removeEventListener(
+                event,
+                oldEventListener
+              );
+              oldElementTemplate.DOMEl.addEventListener(
+                event,
+                newEventListener
+              );
+            } else {
+              oldElementTemplate.DOMEl.setAttribute(attr, newProps[attr]);
+            }
+          }
+          oldProps[prop] = newProps[prop];
+        }
+      }
+    }
+    return changed;
+  }
   createTree(child: childrenType, parent?: HTMLElement) {
     if (!parent) parent = this.DOMRoot;
     if (typeof child === "string") {
