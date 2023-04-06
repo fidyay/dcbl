@@ -2,11 +2,18 @@ import ComponentManager from "../Components/ComponentManager";
 import DOMElementTemplate, {
   DOMElementPropsType
 } from "../DOMElementTemplate/DOMElementTemplate";
-import { childrenType, DOMElementType } from "../createElement/createElement";
+import { DOMElementType } from "../createElement/createElement";
 import Component from "../Components/Component";
 import { Styles } from "../global";
 
 type EventType = (this: Element, ev: Event) => any;
+
+export type TreeType =
+  | string
+  | DOMElementTemplate<DOMElementType>
+  | ComponentManager<Component<any, any>>
+  | null;
+
 class VirtualDOM {
   DOMRoot!: HTMLElement;
   checkProps(
@@ -29,7 +36,6 @@ class VirtualDOM {
         for (const style of allStyles) {
           if (!Object.is(newStyles[style], oldStyles[style])) {
             if (newStyles[style] === undefined && oldStyles[style]) {
-              delete oldStyles[style];
               /* 
                 According to MDN documentation a style declaration is reset by setting it to null or an empty string,
                 but typescript does not allow it in either way.
@@ -38,7 +44,6 @@ class VirtualDOM {
               //@ts-ignore
               oldElementTemplate.DOMEl.style[style] = null;
             } else {
-              oldStyles[style] = newStyles[style];
               oldElementTemplate.DOMEl.style[style] = newStyles[style];
             }
           }
@@ -56,11 +61,10 @@ class VirtualDOM {
                 event,
                 eventListener
               );
-            } else {
+            } else if (attr !== "children") {
               oldElementTemplate.DOMEl.removeAttribute(attr);
             }
           }
-          delete oldProps[prop];
         } else {
           // setting other values
           if (oldElementTemplate) {
@@ -77,22 +81,126 @@ class VirtualDOM {
                 event,
                 newEventListener
               );
-            } else {
-              oldElementTemplate.DOMEl.setAttribute(attr, newProps[attr]);
+            } else if (attr !== "children") {
+              const attrName = attr === "className" ? "class" : attr;
+              oldElementTemplate.DOMEl.setAttribute(attrName, newProps[attr]);
             }
           }
-          oldProps[prop] = newProps[prop];
         }
       }
     }
     return changed;
   }
-  createTree(child: childrenType, parent?: HTMLElement) {
+  changeTree(
+    oldTree: TreeType,
+    newTree: TreeType,
+    parent: HTMLElement,
+    childIndex?: number
+  ) {
+    // node replacement
+    if (
+      typeof oldTree !== typeof newTree ||
+      (oldTree === null && newTree !== null) ||
+      (oldTree !== null && newTree === null) ||
+      (oldTree === "" && newTree !== "") ||
+      (oldTree !== "" && newTree === "") ||
+      (oldTree instanceof DOMElementTemplate &&
+        newTree instanceof ComponentManager) ||
+      (oldTree instanceof ComponentManager &&
+        newTree instanceof DOMElementTemplate)
+    ) {
+      this.createTree(newTree, parent, childIndex);
+    } else if (typeof oldTree === "string" && typeof newTree === "string") {
+      if (oldTree !== newTree) {
+        this.createTree(newTree, parent, childIndex);
+      }
+    } else if (typeof oldTree === "object" && typeof newTree === "object") {
+      if (
+        oldTree instanceof DOMElementTemplate &&
+        newTree instanceof DOMElementTemplate
+      ) {
+        newTree.DOMEl = oldTree.DOMEl;
+        if (oldTree.type !== newTree.type) {
+          this.createTree(newTree, parent, childIndex);
+        } else {
+          // mutating dom elements
+          this.checkProps(oldTree.props, newTree.props, oldTree);
+          // handling children
+          let oldChildren: TreeType[] | null = null;
+          let newChildren: TreeType[] | null = null;
+          if (oldTree.props.children)
+            oldChildren = oldTree.props.children.flat();
+          if (newTree.props.children)
+            newChildren = newTree.props.children.flat();
+          let childrenLength = 0;
+          if (oldChildren || newChildren) {
+            if (!oldChildren && newChildren) {
+              childrenLength = newChildren.length;
+            } else if (oldChildren && !newChildren) {
+              childrenLength = oldChildren.length;
+            } else if (oldChildren && newChildren) {
+              if (oldChildren.length >= newChildren.length)
+                childrenLength = oldChildren.length;
+              else childrenLength = newChildren.length;
+            }
+            for (let i = 0, childIndex = 0; i < childrenLength; i++) {
+              const oldcChild = (oldChildren as TreeType[])[i] || null;
+              const newChild = (newChildren as TreeType[])[i] || null;
+              this.changeTree(oldcChild, newChild, oldTree.DOMEl, childIndex);
+              if (oldcChild) childIndex++;
+            }
+          }
+        }
+      } else if (
+        oldTree instanceof ComponentManager &&
+        newTree instanceof ComponentManager
+      ) {
+        const oldComponent = oldTree.component;
+        const newComponent = newTree.component;
+        if (oldComponent.constructor !== newComponent.constructor) {
+          this.createTree(newTree, parent, childIndex);
+        } else {
+          newComponent.state = oldComponent.state;
+          newTree.componentChildTree = oldTree.componentChildTree;
+          if (
+            this.checkProps(oldTree.component.props, newTree.component.props)
+          ) {
+            const newChildTree = newComponent.render();
+            newTree.componentChildTree = newChildTree;
+            this.changeTree(
+              oldTree.componentChildTree,
+              newTree.componentChildTree,
+              parent,
+              childIndex
+            );
+          } else {
+            newTree.componentChildTree = oldTree.componentChildTree;
+          }
+        }
+      }
+    }
+    // mutating node
+  }
+  createTree(child: TreeType, parent?: HTMLElement, childIndex?: number) {
     if (!parent) parent = this.DOMRoot;
-    if (typeof child === "string") {
+    if (!Number.isInteger(childIndex)) {
+      childIndex = parent.childNodes.length;
+    }
+    const elInPlace: ChildNode | undefined =
+      parent.childNodes[childIndex as number];
+    if (child === null) {
+      if (elInPlace) {
+        elInPlace.remove();
+      }
+    } else if (typeof child === "string") {
       const textNode = document.createTextNode(child);
-      parent.append(textNode);
+      if (elInPlace) {
+        parent.replaceChild(textNode, elInPlace);
+      } else {
+        parent.append(textNode);
+      }
     } else if (child instanceof DOMElementTemplate) {
+      child.indexInParent = childIndex as number;
       const el = document.createElement(child.type);
       const propsArr = Object.keys(child.props) as (keyof typeof child.props)[];
       for (const attr of propsArr) {
@@ -113,24 +221,25 @@ class VirtualDOM {
             elStyles[style] = styles[style] as string;
           }
         } else {
-          el.setAttribute(attr, child.props[attr] as any);
+          const attrName = attr === "className" ? "class" : attr;
+          el.setAttribute(attrName, child.props[attr] as any);
         }
-        parent.append(el);
+        if (elInPlace) {
+          parent.replaceChild(el, elInPlace);
+        } else {
+          parent.append(el);
+        }
         child.DOMEl = el;
       }
     } else if (child instanceof ComponentManager) {
+      child.indexInParent = childIndex as number;
       child.VD = this;
       const treeTemplate = child.component.render();
-      this.createTree(treeTemplate, parent);
+      child.componentChildTree = treeTemplate;
+      this.createTree(treeTemplate, parent, childIndex);
     }
   }
-  createTreeFromRoot(
-    rootElement:
-      | string
-      | DOMElementTemplate<DOMElementType>
-      | ComponentManager<Component<any, any>>,
-    rootDOMElement?: HTMLElement
-  ) {
+  createTreeFromRoot(rootElement: TreeType, rootDOMElement?: HTMLElement) {
     if (!rootDOMElement) {
       rootDOMElement = document.createElement("div");
       rootDOMElement.id = "decibel-root";

@@ -6,6 +6,7 @@ export type DOMElementPropsType<T extends DOMElementType> =
   JSX.IntrinsicElements[T] & { children?: childrenType[] };
 
 class DOMElementTemplate<T extends DOMElementType> {
+  public indexInParent!: number;
   public DOMEl!: HTMLElement;
   public type: T;
   public props: DOMElementPropsType<T>;

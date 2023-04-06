@@ -108,6 +108,7 @@ export type Styles = MakeStylesType<CSSStyleDeclaration>;
 
 type MakeIETypes<Type> = {
   [Element in keyof Type]: OptionateAndRemove<Type[Element], excludedFields> & {
+    disabled?: boolean;
     children?: childrenType;
     style?: Styles;
   };

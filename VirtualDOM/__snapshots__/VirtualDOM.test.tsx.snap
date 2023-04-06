@@ -1,5 +1,205 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`testing tree changing VD changes the attributes 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <a
+      class="link_unvisited"
+      disabled="false"
+      style="color: rgb(255, 255, 255); display: block;"
+    >
+      Link to somewhere
+    </a>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD changes the attributes 2`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <a
+      class="link_visited"
+      disabled="true"
+      style="color: rgb(204, 204, 204); display: block;"
+    >
+      Link to somewhere
+    </a>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD deletes the elements 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <ul>
+      <li>
+        0
+      </li>
+      <li>
+        1
+      </li>
+      <li>
+        2
+      </li>
+      <li>
+        3
+      </li>
+    </ul>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD deletes the elements 2`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <ul>
+      <li>
+        0
+      </li>
+      <li>
+        1
+      </li>
+      <li>
+        2
+      </li>
+    </ul>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD deletes the elements 3`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <ul>
+      <li>
+        0
+      </li>
+      <li>
+        2
+      </li>
+    </ul>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD deletes the elements 4`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <ul>
+      <li>
+        2
+      </li>
+    </ul>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD replaces the element 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      <header>
+        Click to win
+      </header>
+      <button>
+        Win!
+      </button>
+      <footer>
+        Lorem ipsum
+      </footer>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD replaces the element 2`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      <header>
+        Click to win
+      </header>
+      <span>
+        You won
+      </span>
+      <footer>
+        Lorem ipsum
+      </footer>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing changes text in DOM 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      Clicks: 
+      0
+      <button
+        style="color: rgb(255, 255, 255);"
+      >
+        +1
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing changes text in DOM 2`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      Clicks: 
+      1
+      <button
+        style="color: rgb(255, 255, 255);"
+      >
+        +1
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing changes text in DOM 3`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      Clicks: 
+      2
+      <button
+        style="color: rgb(255, 255, 255);"
+      >
+        +1
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`testing tree creation creates anchor element 1`] = `
 <body>
   <div
@@ -21,6 +221,22 @@ exports[`testing tree creation creates text node 1`] = `
   >
     sample text
   </div>
+</body>
+`;
+
+exports[`testing tree creation inserts array of elements 1`] = `
+<body>
+  <ul>
+    <li>
+      1
+    </li>
+    <li>
+      2
+    </li>
+    <li>
+      3
+    </li>
+  </ul>
 </body>
 `;
 

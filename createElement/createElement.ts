@@ -10,8 +10,12 @@ export type childrenType =
   | DOMElementTemplate<DOMElementType>
   | string
   | ComponentManager<Component>
+  | null
   | Array<
-      DOMElementTemplate<DOMElementType> | string | ComponentManager<Component>
+      | DOMElementTemplate<DOMElementType>
+      | string
+      | ComponentManager<Component>
+      | null
     >;
 
 type GetComponentPropsType<C extends typeof Component> = RemoveFields<

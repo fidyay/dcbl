@@ -1,5 +1,6 @@
-import { childrenType } from "../createElement/createElement";
 import ComponentManager from "./ComponentManager";
+import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
+import { TreeType } from "../VirtualDOM/VirtualDOM";
 
 export type BasicPropsAndStateInterface = object;
 
@@ -35,6 +36,6 @@ abstract class Component<
     }
     this._manager?.rerenderComponent();
   }
-  abstract render(): childrenType;
+  abstract render(): TreeType;
 }
 export default Component;
