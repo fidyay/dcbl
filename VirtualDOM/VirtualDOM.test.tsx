@@ -1,7 +1,10 @@
 import VirtualDOM, { TreeType } from "./VirtualDOM";
 import Component from "../Components/Component";
-import createElement from "../createElement/createElement";
+import createElement, { childrenType } from "../createElement/createElement";
 import ComponentManager from "../Components/ComponentManager";
+import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
+
+// making mock functions
 
 class List extends Component {
   render() {
@@ -137,6 +140,32 @@ class ClickToWin extends Component<any, { won: boolean }> {
   }
 }
 
+class AddContent extends Component {
+  render() {
+    return <p>Add content.</p>;
+  }
+}
+class Addvertisement extends Component<
+  { children: ComponentManager<AddContent> },
+  { seen: boolean }
+> {
+  constructor(props: { children: ComponentManager<AddContent> }) {
+    super(props);
+    this.state.seen = false;
+  }
+  render() {
+    return (
+      <div>
+        {this.state.seen ? <p>You seen this add.</p> : this.props.children}
+      </div>
+    );
+  }
+
+  async seeAdd() {
+    await this.setState({ seen: true });
+  }
+}
+
 const link = <a href="https://google.com">Google</a>;
 
 const textNode = "sample text";
@@ -223,5 +252,53 @@ describe("testing tree changing", () => {
     const todoFirst = cm.component.state.todos[0];
     await todoFirst.component.props.completeTodo();
     expect(document.body).toMatchSnapshot();
+  });
+});
+
+describe("lifecycle methods", () => {
+  let vd: VirtualDOM;
+  beforeEach(() => (vd = new VirtualDOM()));
+  afterEach(() => (document.body.innerHTML = ""));
+  test("component did mount listener", () => {
+    const cm = (<Clicker />) as ComponentManager<Clicker>;
+    const mock = jest.spyOn(cm.component, "componentDidMount");
+    vd.createTreeFromRoot(cm);
+    expect(mock).toBeCalledTimes(1);
+  });
+  test("component checks props", async () => {
+    const root = (<Clicker />) as ComponentManager<Clicker>;
+    vd.createTreeFromRoot(root);
+    const button = (
+      (root.componentChildTree as DOMElementTemplate<"div">).props
+        .children as childrenType[]
+    )[2] as ComponentManager<Button>;
+    const mock = jest.spyOn(button.component, "shouldComponentUpdate");
+    await root.component.onClickListener();
+    expect(mock).toBeCalledTimes(1);
+  });
+  test("components run update listener", async () => {
+    const root = (<Clicker />) as ComponentManager<Clicker>;
+    vd.createTreeFromRoot(root);
+    const mock = jest.spyOn(Component.prototype, "componentDidUpdate");
+    await root.component.onClickListener();
+    expect(mock).toBeCalledTimes(2);
+  });
+  test("components run unmount listener", async () => {
+    const root = (<TodoList />) as ComponentManager<TodoList>;
+    vd.createTreeFromRoot(root);
+    const todoLast = root.component.state.todos[3];
+    const mock = jest.spyOn(todoLast.component, "componentWillUnmount");
+    await todoLast.component.props.completeTodo();
+    expect(mock).toBeCalledTimes(1);
+  });
+  test("components run unmount listener when replacing", async () => {
+    const addContent = (<AddContent />) as ComponentManager<AddContent>;
+    const add = (
+      <Addvertisement>{addContent}</Addvertisement>
+    ) as ComponentManager<Addvertisement>;
+    vd.createTreeFromRoot(add);
+    const mock = jest.spyOn(addContent.component, "componentWillUnmount");
+    await add.component.seeAdd();
+    expect(mock).toBeCalledTimes(1);
   });
 });

@@ -1,5 +1,4 @@
 import ComponentManager from "./ComponentManager";
-import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
 import { TreeType } from "../VirtualDOM/VirtualDOM";
 
 export type BasicPropsAndStateInterface = object;
@@ -37,5 +36,25 @@ abstract class Component<
     this._manager?.rerenderComponent();
   }
   abstract render(): TreeType;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  componentDidMount() {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  shouldComponentUpdate(oldProps: P, newProps: P) {
+    let shouldUpdate = false;
+    const oldKeys = Object.keys(oldProps) as Array<keyof P>;
+    const newKeys = Object.keys(newProps) as Array<keyof P>;
+    const allProps = new Set<keyof P>([...oldKeys, ...newKeys]);
+    for (const prop of allProps) {
+      if (!Object.is(oldProps[prop], newProps[prop])) {
+        shouldUpdate = true;
+        break;
+      }
+    }
+    return shouldUpdate;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  componentDidUpdate() {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  componentWillUnmount() {}
 }
 export default Component;

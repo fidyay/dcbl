@@ -16,6 +16,17 @@ export type TreeType =
 
 class VirtualDOM {
   DOMRoot!: HTMLElement;
+  runComponentWillUnmount(tree: TreeType) {
+    if (tree instanceof ComponentManager) {
+      tree.component.componentWillUnmount();
+      this.runComponentWillUnmount(tree.componentChildTree);
+    } else if (tree instanceof DOMElementTemplate) {
+      const children = tree.props.children?.flat();
+      for (const child of children as TreeType[]) {
+        this.runComponentWillUnmount(child);
+      }
+    }
+  }
   checkProps(
     oldProps: any,
     newProps: any,
@@ -109,6 +120,9 @@ class VirtualDOM {
       (oldTree instanceof ComponentManager &&
         newTree instanceof DOMElementTemplate)
     ) {
+      if (oldTree instanceof ComponentManager) {
+        this.runComponentWillUnmount(oldTree);
+      }
       this.createTree(newTree, parent, childIndex);
     } else if (typeof oldTree === "string" && typeof newTree === "string") {
       if (oldTree !== newTree) {
@@ -158,12 +172,16 @@ class VirtualDOM {
         const oldComponent = oldTree.component;
         const newComponent = newTree.component;
         if (oldComponent.constructor !== newComponent.constructor) {
+          this.runComponentWillUnmount(oldTree);
           this.createTree(newTree, parent, childIndex);
         } else {
           newComponent.state = oldComponent.state;
           newTree.componentChildTree = oldTree.componentChildTree;
           if (
-            this.checkProps(oldTree.component.props, newTree.component.props)
+            oldComponent.shouldComponentUpdate(
+              oldTree.component.props,
+              newTree.component.props
+            )
           ) {
             const newChildTree = newComponent.render();
             newTree.componentChildTree = newChildTree;
@@ -173,8 +191,7 @@ class VirtualDOM {
               parent,
               childIndex
             );
-          } else {
-            newTree.componentChildTree = oldTree.componentChildTree;
+            newComponent.componentDidUpdate();
           }
         }
       }
@@ -237,6 +254,7 @@ class VirtualDOM {
       const treeTemplate = child.component.render();
       child.componentChildTree = treeTemplate;
       this.createTree(treeTemplate, parent, childIndex);
+      child.component.componentDidMount();
     }
   }
   createTreeFromRoot(rootElement: TreeType, rootDOMElement?: HTMLElement) {

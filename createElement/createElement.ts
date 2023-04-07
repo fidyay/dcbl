@@ -9,20 +9,20 @@ export type DOMElementType = keyof HTMLElementTagNameMap;
 export type childrenType =
   | DOMElementTemplate<DOMElementType>
   | string
-  | ComponentManager<Component>
+  | ComponentManager<Component<any, any>>
   | null
   | Array<
       | DOMElementTemplate<DOMElementType>
       | string
-      | ComponentManager<Component>
+      | ComponentManager<Component<any, any>>
       | null
     >;
 
-type GetComponentPropsType<C extends typeof Component> = RemoveFields<
+type GetComponentPropsType<C extends typeof Component<any, any>> = RemoveFields<
   ConstructorParameters<C>[0],
   "children"
 >;
-type GetComponentChildrenType<C extends typeof Component> =
+type GetComponentChildrenType<C extends typeof Component<any, any>> =
   "children" extends keyof ConstructorParameters<C>[0]
     ? ConstructorParameters<C>[0]["children"] extends Array<childrenType>
       ? ConstructorParameters<C>[0]["children"]
@@ -43,8 +43,10 @@ function createElement(
   type: DOMElementType | typeof Component,
   props:
     | JSX.IntrinsicElements[DOMElementType]
-    | GetComponentPropsType<typeof Component>,
-  ...children: childrenType[] | GetComponentChildrenType<typeof Component>
+    | GetComponentPropsType<typeof Component<any, any>>,
+  ...children:
+    | childrenType[]
+    | GetComponentChildrenType<typeof Component<any, any>>
 ) {
   if (typeof type === "string") {
     const domElProps = {
@@ -58,7 +60,7 @@ function createElement(
       typeof Component
     >[0];
     const constr = type as new (
-      props: ConstructorParameters<typeof Component>[0]
+      props: ConstructorParameters<typeof Component<any, any>>[0]
     ) => Component;
     const comp = new constr(compProps);
     const cm = new ComponentManager(comp);

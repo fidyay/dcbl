@@ -22,6 +22,7 @@ class ComponentManager<C extends Component<any, any>> {
       );
     }
     this.componentChildTree = newTree;
+    this.component.componentDidUpdate();
   }
 }
 
