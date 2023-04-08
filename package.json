@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "webpack",
-    "build": "webpack --mode production",
+    "build": "tsc",
     "test": "jest",
     "lint-fix": "eslint --fix",
     "prepare": "husky install"
