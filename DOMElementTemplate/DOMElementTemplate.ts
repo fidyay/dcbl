@@ -7,16 +7,15 @@ export type DOMElementPropsType<T extends DOMElementType> =
 
 /**
  * A class specified for a template of a DOM element used later in virtual DOM to implement or change actual DOM element
- *
- * @field indexInParent - index in child nodes of parent DOM element
- * @field DOMEl - link to a DOM element created by virtual DOM
- * @field type - a tag name
- * @field props - props of an element
  */
 class DOMElementTemplate<T extends DOMElementType> {
+  /** Index in parent DOM element */
   public indexInParent!: number;
+  /** Link to element in DOM */
   public DOMEl!: HTMLElement;
+  /** DOM element tag name */
   public type: T;
+  /** Element props */
   public props: DOMElementPropsType<T>;
   /**
    * Creates a {@link DOMElementTemplate} instance.
