@@ -14,8 +14,13 @@ export type TreeType =
   | ComponentManager<Component<any, any>>
   | null;
 
+/** Class of the virtual dom. */
 class VirtualDOM {
+  /** The root of the UI controlled by instance of a {@link VirtualDOM} class. It is set when the virtual dom is created. */
   DOMRoot!: HTMLElement;
+  /** Runs {@link Component.componentWillUnmount | componentWillUnmount} methods of all components inside the tree.
+   * @param tree - element tree.
+   */
   runComponentWillUnmount(tree: TreeType) {
     if (tree instanceof ComponentManager) {
       tree.component.componentWillUnmount();
@@ -27,6 +32,12 @@ class VirtualDOM {
       }
     }
   }
+  /** Checks props of an element. If element is an instance of {@link DOMElementTemplate} class, it changes the attributes of a DOM element.
+   * @param oldProps - old props object.
+   * @param newProps - new props object.
+   * @param oldElementTemplate - optianal parameter of an old {@link DOMElementTemplate | DOMElementTemplate's} instance, which stores the link to DOM element.
+   * @returns - true if props were changed, false otherwise.
+   */
   checkProps(
     oldProps: any,
     newProps: any,
@@ -102,6 +113,13 @@ class VirtualDOM {
     }
     return changed;
   }
+  /**
+   * Changes the UI to the new tree.
+   * @param oldTree - the old tree's element.
+   * @param newTree - the new tree's element.
+   * @param parent - the parent DOM element.
+   * @param childIndex - index in childNodes of parent DOM element.
+   */
   changeTree(
     oldTree: TreeType,
     newTree: TreeType,
@@ -196,8 +214,12 @@ class VirtualDOM {
         }
       }
     }
-    // mutating node
   }
+  /** Creates new DOM element tree and pushes inside to parent DOM element.
+   * @param child - the tree element.
+   * @param parent - the parent element. If it's not set, the {@link VirtualDOM.DOMRoot | DOMRoot} is used.
+   * @param childIndex - index in childNodes of parent element.
+   */
   createTree(child: TreeType, parent?: HTMLElement, childIndex?: number) {
     if (!parent) parent = this.DOMRoot;
     if (!Number.isInteger(childIndex)) {
@@ -257,6 +279,11 @@ class VirtualDOM {
       child.component.componentDidMount();
     }
   }
+  /**
+   * Creates virtual dom tree from given tree element.
+   * @param rootElement - root element.
+   * @param rootDOMElement - root DOM element, saves it to {@link VirtualDOM.DOMRoot | DOMRoot}. If it's not provided, creates div with an id attribute set to "decibel-root".
+   */
   createTreeFromRoot(rootElement: TreeType, rootDOMElement?: HTMLElement) {
     if (!rootDOMElement) {
       rootDOMElement = document.createElement("div");
