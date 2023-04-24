@@ -29,11 +29,25 @@ type GetComponentChildrenType<C extends typeof Component<any, any>> =
       : [ConstructorParameters<C>[0]["children"]]
     : [];
 
+/**
+ * Creates an element of virtual dom
+ * @param el - tag name.
+ * @param props - DOM element's attributes.
+ * @param children - children of an element.
+ * @returns - {@link DOMElementTemplate | DOMElementTemplate's} instance.
+ */
 function createElement<E extends DOMElementType>(
   el: E,
   props: JSX.IntrinsicElements[E],
   ...children: childrenType[]
 ): DOMElementTemplate<E>;
+/**
+ * Creates a component manager.
+ * @param el - component's class.
+ * @param props - component's props.
+ * @param children - children of the component.
+ * @returns - {@link ComponentManager | ComponentManager's} instance.
+ */
 function createElement<C extends typeof Component<any, any>>(
   comp: C,
   props: GetComponentPropsType<C>,
