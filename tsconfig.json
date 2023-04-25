@@ -4,10 +4,7 @@
     "node_modules",
     "webpack.config.js",
     "dist/*",
-    "*.test.ts",
-    "*.spec.ts",
-    "coverage",
-    "jest.*"
+    "coverage"
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
