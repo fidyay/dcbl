@@ -45,7 +45,7 @@ Creates an element of virtual dom
 
 #### Defined in
 
-[createElement/createElement.ts:39](https://github.com/fidyay/dcbl/blob/6d857d5/createElement/createElement.ts#L39)
+[createElement/createElement.ts:39](https://github.com/fidyay/dcbl/blob/1a6081b/createElement/createElement.ts#L39)
 
 ▸ **createElement**<`C`\>(`comp`, `props`, `...children`): [`ComponentManager`](classes/ComponentManager.md)<`InstanceType`<`C`\>\>
 
@@ -61,7 +61,7 @@ Creates a component manager.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `comp` | `C` | - |
+| `comp` | `C` | component's class. |
 | `props` | `RemoveFields`<`ConstructorParameters`<`C`\>[``0``], ``"children"``\> | component's props. |
 | `...children` | `GetComponentChildrenType`<`C`\> | children of the component. |
 
@@ -73,4 +73,4 @@ Creates a component manager.
 
 #### Defined in
 
-[createElement/createElement.ts:51](https://github.com/fidyay/dcbl/blob/6d857d5/createElement/createElement.ts#L51)
+[createElement/createElement.ts:51](https://github.com/fidyay/dcbl/blob/1a6081b/createElement/createElement.ts#L51)

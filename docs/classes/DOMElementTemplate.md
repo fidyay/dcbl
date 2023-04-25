@@ -46,7 +46,7 @@ Creates a [DOMElementTemplate](DOMElementTemplate.md) instance.
 
 #### Defined in
 
-[DOMElementTemplate/DOMElementTemplate.ts:25](https://github.com/fidyay/dcbl/blob/6d857d5/DOMElementTemplate/DOMElementTemplate.ts#L25)
+[DOMElementTemplate/DOMElementTemplate.ts:25](https://github.com/fidyay/dcbl/blob/1a6081b/DOMElementTemplate/DOMElementTemplate.ts#L25)
 
 ## Properties
 
@@ -58,7 +58,7 @@ Link to element in DOM
 
 #### Defined in
 
-[DOMElementTemplate/DOMElementTemplate.ts:15](https://github.com/fidyay/dcbl/blob/6d857d5/DOMElementTemplate/DOMElementTemplate.ts#L15)
+[DOMElementTemplate/DOMElementTemplate.ts:15](https://github.com/fidyay/dcbl/blob/1a6081b/DOMElementTemplate/DOMElementTemplate.ts#L15)
 
 ___
 
@@ -70,7 +70,7 @@ Index in parent DOM element
 
 #### Defined in
 
-[DOMElementTemplate/DOMElementTemplate.ts:13](https://github.com/fidyay/dcbl/blob/6d857d5/DOMElementTemplate/DOMElementTemplate.ts#L13)
+[DOMElementTemplate/DOMElementTemplate.ts:13](https://github.com/fidyay/dcbl/blob/1a6081b/DOMElementTemplate/DOMElementTemplate.ts#L13)
 
 ___
 
@@ -82,7 +82,7 @@ Element props
 
 #### Defined in
 
-[DOMElementTemplate/DOMElementTemplate.ts:19](https://github.com/fidyay/dcbl/blob/6d857d5/DOMElementTemplate/DOMElementTemplate.ts#L19)
+[DOMElementTemplate/DOMElementTemplate.ts:19](https://github.com/fidyay/dcbl/blob/1a6081b/DOMElementTemplate/DOMElementTemplate.ts#L19)
 
 ___
 
@@ -94,4 +94,4 @@ DOM element tag name
 
 #### Defined in
 
-[DOMElementTemplate/DOMElementTemplate.ts:17](https://github.com/fidyay/dcbl/blob/6d857d5/DOMElementTemplate/DOMElementTemplate.ts#L17)
+[DOMElementTemplate/DOMElementTemplate.ts:17](https://github.com/fidyay/dcbl/blob/1a6081b/DOMElementTemplate/DOMElementTemplate.ts#L17)

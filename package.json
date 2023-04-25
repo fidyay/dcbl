@@ -14,8 +14,14 @@
     "prepare": "husky install",
     "create-docs": "typedoc --plugin typedoc-plugin-markdown --out docs index.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "declarative",
+    "javascript",
+    "typescript",
+    "library",
+    "component"
+  ],
+  "author": "Fidyay",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^28.1.7",

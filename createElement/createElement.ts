@@ -43,7 +43,7 @@ function createElement<E extends DOMElementType>(
 ): DOMElementTemplate<E>;
 /**
  * Creates a component manager.
- * @param el - component's class.
+ * @param comp - component's class.
  * @param props - component's props.
  * @param children - children of the component.
  * @returns - {@link ComponentManager | ComponentManager's} instance.

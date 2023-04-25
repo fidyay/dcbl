@@ -59,7 +59,7 @@ Creates a [Component](Component.md) instance, saves props to component and sets 
 
 #### Defined in
 
-[Components/Component.ts:23](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L23)
+[Components/Component.ts:23](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L23)
 
 ## Properties
 
@@ -71,7 +71,7 @@ Object of a [ComponentManager](ComponentManager.md) class, which controls the co
 
 #### Defined in
 
-[Components/Component.ts:31](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L31)
+[Components/Component.ts:31](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L31)
 
 ___
 
@@ -83,7 +83,7 @@ Props of a component, component gets them from the parent element, component rer
 
 #### Defined in
 
-[Components/Component.ts:16](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L16)
+[Components/Component.ts:16](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L16)
 
 ___
 
@@ -95,7 +95,7 @@ State of a component. Each component has unique state. When state changes, compo
 
 #### Defined in
 
-[Components/Component.ts:18](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L18)
+[Components/Component.ts:18](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L18)
 
 ## Accessors
 
@@ -117,7 +117,7 @@ Setter of a [_manager](Component.md#_manager) property. Virtual dom sets it auto
 
 #### Defined in
 
-[Components/Component.ts:33](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L33)
+[Components/Component.ts:33](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L33)
 
 ## Methods
 
@@ -133,7 +133,7 @@ Runs after the UI was created. By default does nothing.
 
 #### Defined in
 
-[Components/Component.ts:56](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L56)
+[Components/Component.ts:56](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L56)
 
 ___
 
@@ -149,7 +149,7 @@ Runs after component rerenders. By default does nothing.
 
 #### Defined in
 
-[Components/Component.ts:78](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L78)
+[Components/Component.ts:78](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L78)
 
 ___
 
@@ -165,7 +165,7 @@ Runs when component is going to be deleted from the UI. By default does nothing.
 
 #### Defined in
 
-[Components/Component.ts:81](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L81)
+[Components/Component.ts:81](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L81)
 
 ___
 
@@ -181,7 +181,7 @@ Method that return the component's element tree. User should implement the metho
 
 #### Defined in
 
-[Components/Component.ts:53](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L53)
+[Components/Component.ts:53](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L53)
 
 ___
 
@@ -203,7 +203,7 @@ Sets new state to component and then rerenders it. Resetting the method to other
 
 #### Defined in
 
-[Components/Component.ts:39](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L39)
+[Components/Component.ts:39](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L39)
 
 ___
 
@@ -228,4 +228,4 @@ Runs when virtual dom checks wether the component should rerender on props chang
 
 #### Defined in
 
-[Components/Component.ts:63](https://github.com/fidyay/dcbl/blob/6d857d5/Components/Component.ts#L63)
+[Components/Component.ts:63](https://github.com/fidyay/dcbl/blob/1a6081b/Components/Component.ts#L63)
