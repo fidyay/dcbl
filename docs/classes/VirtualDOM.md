@@ -1,4 +1,4 @@
-[dcbl](../README.md) / [Exports](../modules.md) / VirtualDOM
+[dcbl](../docs.md) / VirtualDOM
 
 # Class: VirtualDOM
 
@@ -38,7 +38,7 @@ The root of the UI controlled by instance of a [VirtualDOM](VirtualDOM.md) class
 
 #### Defined in
 
-[VirtualDOM/VirtualDOM.ts:20](https://github.com/fidyay/dcbl/blob/1a6081b/VirtualDOM/VirtualDOM.ts#L20)
+[VirtualDOM/VirtualDOM.ts:20](https://github.com/fidyay/dcbl/blob/6d5aedf/VirtualDOM/VirtualDOM.ts#L20)
 
 ## Methods
 
@@ -63,7 +63,7 @@ Changes the UI to the new tree.
 
 #### Defined in
 
-[VirtualDOM/VirtualDOM.ts:123](https://github.com/fidyay/dcbl/blob/1a6081b/VirtualDOM/VirtualDOM.ts#L123)
+[VirtualDOM/VirtualDOM.ts:123](https://github.com/fidyay/dcbl/blob/6d5aedf/VirtualDOM/VirtualDOM.ts#L123)
 
 ___
 
@@ -89,7 +89,7 @@ Checks props of an element. If element is an instance of [DOMElementTemplate](DO
 
 #### Defined in
 
-[VirtualDOM/VirtualDOM.ts:41](https://github.com/fidyay/dcbl/blob/1a6081b/VirtualDOM/VirtualDOM.ts#L41)
+[VirtualDOM/VirtualDOM.ts:41](https://github.com/fidyay/dcbl/blob/6d5aedf/VirtualDOM/VirtualDOM.ts#L41)
 
 ___
 
@@ -113,7 +113,7 @@ Creates new DOM element tree and pushes inside to parent DOM element.
 
 #### Defined in
 
-[VirtualDOM/VirtualDOM.ts:223](https://github.com/fidyay/dcbl/blob/1a6081b/VirtualDOM/VirtualDOM.ts#L223)
+[VirtualDOM/VirtualDOM.ts:223](https://github.com/fidyay/dcbl/blob/6d5aedf/VirtualDOM/VirtualDOM.ts#L223)
 
 ___
 
@@ -136,7 +136,7 @@ Creates virtual dom tree from given tree element.
 
 #### Defined in
 
-[VirtualDOM/VirtualDOM.ts:287](https://github.com/fidyay/dcbl/blob/1a6081b/VirtualDOM/VirtualDOM.ts#L287)
+[VirtualDOM/VirtualDOM.ts:287](https://github.com/fidyay/dcbl/blob/6d5aedf/VirtualDOM/VirtualDOM.ts#L287)
 
 ___
 
@@ -158,4 +158,4 @@ Runs [componentWillUnmount](Component.md#componentwillunmount) methods of all co
 
 #### Defined in
 
-[VirtualDOM/VirtualDOM.ts:24](https://github.com/fidyay/dcbl/blob/1a6081b/VirtualDOM/VirtualDOM.ts#L24)
+[VirtualDOM/VirtualDOM.ts:24](https://github.com/fidyay/dcbl/blob/6d5aedf/VirtualDOM/VirtualDOM.ts#L24)

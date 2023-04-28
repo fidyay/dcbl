@@ -1,4 +1,4 @@
-[dcbl](README.md) / Exports
+dcbl
 
 # dcbl
 
@@ -13,7 +13,7 @@
 
 ### Functions
 
-- [createElement](modules.md#createelement)
+- [createElement](docs.md#createelement)
 
 ## Functions
 
@@ -45,7 +45,7 @@ Creates an element of virtual dom
 
 #### Defined in
 
-[createElement/createElement.ts:39](https://github.com/fidyay/dcbl/blob/1a6081b/createElement/createElement.ts#L39)
+[createElement/createElement.ts:39](https://github.com/fidyay/dcbl/blob/6d5aedf/createElement/createElement.ts#L39)
 
 ▸ **createElement**<`C`\>(`comp`, `props`, `...children`): [`ComponentManager`](classes/ComponentManager.md)<`InstanceType`<`C`\>\>
 
@@ -73,4 +73,4 @@ Creates a component manager.
 
 #### Defined in
 
-[createElement/createElement.ts:51](https://github.com/fidyay/dcbl/blob/1a6081b/createElement/createElement.ts#L51)
+[createElement/createElement.ts:51](https://github.com/fidyay/dcbl/blob/6d5aedf/createElement/createElement.ts#L51)

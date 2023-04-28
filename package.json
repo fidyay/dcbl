@@ -8,11 +8,11 @@
     "/dist"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig.build.json && cp global.d.ts dist",
+    "build": "tsc --project tsconfig.build.json && cp global.d.ts dist && cp -r docs dist",
     "test": "jest",
     "lint-fix": "eslint --fix",
     "prepare": "husky install",
-    "create-docs": "typedoc --plugin typedoc-plugin-markdown --out docs index.ts"
+    "create-docs": "typedoc --readme none --plugin typedoc-plugin-markdown --entryDocument docs.md --out docs index.ts"
   },
   "keywords": [
     "declarative",
@@ -21,7 +21,7 @@
     "library",
     "component"
   ],
-  "author": "Fidyay",
+  "author": "fidyay",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^28.1.7",
