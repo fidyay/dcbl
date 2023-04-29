@@ -1,6 +1,6 @@
 {
   "name": "dcbl",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A declarative component based library for javascript web applications.",
   "type": "module",
   "main": "dist/index.js",
