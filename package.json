@@ -4,12 +4,11 @@
   "description": "A declarative component based library for javascript web applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "browser": "dist/index.js",
   "files": [
     "/dist"
   ],
   "scripts": {
-    "build": "webpack && cp global.d.ts dist && cp -r docs dist",
+    "build": "webpack && cp global.d.ts dist && echo 'import \"./global.d\";' | cat - dist/index.d.ts > temp && mv temp dist/index.d.ts && cp -r docs dist",
     "test": "jest",
     "lint-fix": "eslint --fix",
     "prepare": "husky install",

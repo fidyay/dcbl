@@ -4,7 +4,7 @@ import DOMElementTemplate, {
 } from "../DOMElementTemplate/DOMElementTemplate";
 import { DOMElementType } from "../createElement/createElement";
 import Component from "../Components/Component";
-import { Styles } from "../global";
+import type { Styles } from "../global.d";
 
 type EventType = (this: Element, ev: Event) => any;
 
