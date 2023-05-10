@@ -28,7 +28,7 @@ Create components, which define the structure of your web applications and that 
         return <button onclick={this.addOne}>{String(this.state.clicks)}</button>;
       }
       // method which is provided to button element as event listener
-      addOne() {
+      addOne = () => {
         this.setState({ clicks: this.state.clicks + 1 });
       }
       // changing title of document after the component updated

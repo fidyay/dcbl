@@ -1,14 +1,24 @@
 {
   "name": "dcbl",
-  "version": "1.0.5",
+  "version": "1.0.14",
   "description": "A declarative component based library for javascript web applications.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/umd/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/umd/index.js"
+    }
+  },
   "files": [
     "/dist"
   ],
   "scripts": {
-    "build": "webpack && cp global.d.ts dist && echo 'import \"./global.d\";' | cat - dist/index.d.ts > temp && mv temp dist/index.d.ts && cp -r docs dist",
+    "copy-global-types": "cp global.d.ts dist/types && echo 'import \"./global.d\";' | cat - dist/types/index.d.ts > temp && mv temp dist/types/index.d.ts",
+    "build:umd": "cross-env MODULE=umd webpack",
+    "build:esm": "cross-env MODULE=esm webpack",
+    "build": "npm run build:umd && npm run build:esm && cp -r docs dist && npm run copy-global-types",
     "test": "jest",
     "lint-fix": "eslint --fix",
     "prepare": "husky install",
@@ -19,7 +29,8 @@
     "javascript",
     "typescript",
     "library",
-    "component"
+    "component",
+    "based"
   ],
   "author": "fidyay",
   "license": "ISC",
@@ -30,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "babel-loader": "^9.1.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
