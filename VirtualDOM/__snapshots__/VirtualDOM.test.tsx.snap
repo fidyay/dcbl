@@ -32,6 +32,55 @@ exports[`testing tree changing VD changes the attributes 2`] = `
 </body>
 `;
 
+exports[`testing tree changing VD deletes multiple elements 1`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      <div>
+        0
+      </div>
+      <div>
+        1
+      </div>
+      <div>
+        2
+      </div>
+      <div>
+        3
+      </div>
+      <div>
+        4
+      </div>
+      <div>
+        5
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`testing tree changing VD deletes multiple elements 2`] = `
+<body>
+  <div
+    id="decibel-root"
+  >
+    <div>
+      <div>
+        0
+      </div>
+      <div>
+        1
+      </div>
+      <div>
+        2
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`testing tree changing VD deletes the elements 1`] = `
 <body>
   <div

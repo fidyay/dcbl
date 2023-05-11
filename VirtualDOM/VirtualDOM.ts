@@ -176,10 +176,10 @@ class VirtualDOM {
               else childrenLength = newChildren.length;
             }
             for (let i = 0, childIndex = 0; i < childrenLength; i++) {
-              const oldcChild = (oldChildren as TreeType[])[i] || null;
+              const oldChild = (oldChildren as TreeType[])[i] || null;
               const newChild = (newChildren as TreeType[])[i] || null;
-              this.changeTree(oldcChild, newChild, oldTree.DOMEl, childIndex);
-              if (oldcChild) childIndex++;
+              this.changeTree(oldChild, newChild, oldTree.DOMEl, childIndex);
+              if (oldChild !== null && newChild !== null) childIndex++;
             }
           }
         }

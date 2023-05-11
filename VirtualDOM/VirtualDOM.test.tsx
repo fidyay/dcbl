@@ -92,7 +92,10 @@ class Todo extends Component<{
   }
 }
 
-class TodoList extends Component<any, { todos: ComponentManager<Todo>[] }> {
+class TodoList extends Component<
+  any,
+  { todos: (ComponentManager<Todo> | null)[] }
+> {
   constructor() {
     super({});
     const todos: ComponentManager<Todo>[] = [];
@@ -101,7 +104,7 @@ class TodoList extends Component<any, { todos: ComponentManager<Todo>[] }> {
         <Todo
           completeTodo={async () => {
             const newArr = [...this.state.todos];
-            newArr.splice(i, 1);
+            newArr[i] = null;
             await this.setState({ todos: newArr });
           }}
         >
@@ -114,6 +117,24 @@ class TodoList extends Component<any, { todos: ComponentManager<Todo>[] }> {
   }
   render() {
     return <ul>{this.state.todos}</ul>;
+  }
+}
+
+class Create6Or3El extends Component<any, { elementsNumber: 6 | 3 }> {
+  constructor() {
+    super({});
+    this.state = {
+      elementsNumber: 6
+    };
+  }
+  render() {
+    const elArr: DOMElementTemplate<"div">[] = [];
+    for (let i = 0; i < this.state.elementsNumber; i++)
+      elArr.push((<div>{String(i)}</div>) as DOMElementTemplate<"div">);
+    return <div>{elArr}</div>;
+  }
+  async changeNumber() {
+    await this.setState({ elementsNumber: 3 });
   }
 }
 
@@ -243,14 +264,21 @@ describe("testing tree changing", () => {
     const cm = (<TodoList />) as ComponentManager<TodoList>;
     vd.createTreeFromRoot(cm);
     expect(document.body).toMatchSnapshot();
-    const todoLast = cm.component.state.todos[3];
+    const todoLast = cm.component.state.todos[3] as ComponentManager<Todo>;
     await todoLast.component.props.completeTodo();
     expect(document.body).toMatchSnapshot();
-    const todoSecond = cm.component.state.todos[1];
+    const todoSecond = cm.component.state.todos[1] as ComponentManager<Todo>;
     await todoSecond.component.props.completeTodo();
     expect(document.body).toMatchSnapshot();
-    const todoFirst = cm.component.state.todos[0];
+    const todoFirst = cm.component.state.todos[0] as ComponentManager<Todo>;
     await todoFirst.component.props.completeTodo();
+    expect(document.body).toMatchSnapshot();
+  });
+  test("VD deletes multiple elements", async () => {
+    const cm = (<Create6Or3El />) as ComponentManager<Create6Or3El>;
+    vd.createTreeFromRoot(cm);
+    expect(document.body).toMatchSnapshot();
+    await cm.component.changeNumber();
     expect(document.body).toMatchSnapshot();
   });
 });
@@ -286,7 +314,7 @@ describe("lifecycle methods", () => {
   test("components run unmount listener", async () => {
     const root = (<TodoList />) as ComponentManager<TodoList>;
     vd.createTreeFromRoot(root);
-    const todoLast = root.component.state.todos[3];
+    const todoLast = root.component.state.todos[3] as ComponentManager<Todo>;
     const mock = jest.spyOn(todoLast.component, "componentWillUnmount");
     await todoLast.component.props.completeTodo();
     expect(mock).toBeCalledTimes(1);
