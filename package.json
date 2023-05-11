@@ -1,6 +1,6 @@
 {
   "name": "dcbl",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "A declarative component based library for javascript web applications.",
   "main": "dist/umd/index.js",
   "module": "dist/esm/index.js",
