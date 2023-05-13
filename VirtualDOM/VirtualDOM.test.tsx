@@ -4,8 +4,6 @@ import createElement, { childrenType } from "../createElement/createElement";
 import ComponentManager from "../Components/ComponentManager";
 import DOMElementTemplate from "../DOMElementTemplate/DOMElementTemplate";
 
-// making mock functions
-
 class List extends Component {
   render() {
     return (
