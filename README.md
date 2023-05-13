@@ -3,6 +3,7 @@
 A declarative component based library for javascript web applications.
 Create components, which define the structure of your web applications and that changes with the change of state of your components and extend component's functionality with the lifecycle methods. Also library comes with JSX support.
 [See documentation.](https://github.com/fidyay/dcbl/blob/master/docs/docs.md)
+[See example project.](https://github.com/fidyay/tictactoe)
 
 ### Installation
 
