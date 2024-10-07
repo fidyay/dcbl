@@ -3,81 +3,105 @@ import { TreeType } from "../VirtualDOM/VirtualDOM";
 
 export type BasicPropsAndStateInterface = object;
 
-type settingStateFunction<S, P> = (state: S, props: P) => S | Promise<S>;
+type SetStateFunction<S, P> = (state: S, props: P) => S | Promise<S>;
 
 /**
- * The base class for components of UI.
+ * The base class for UI components.
  */
 abstract class Component<
   P extends BasicPropsAndStateInterface = BasicPropsAndStateInterface,
   S extends BasicPropsAndStateInterface = BasicPropsAndStateInterface
 > {
-  /** Props of a component, component gets them from the parent element, component rerenders when there is a change in props. */
-  props: P;
-  /** State of a component. Each component has unique state. When state changes, component rerenders. */
-  state!: S;
+  /** Props passed from the parent element. Component rerenders when props change. */
+  public props: P;
+
+  /** Unique state for the component. Component rerenders when the state changes. */
+  public state!: S;
+
+  /** A reference to the {@link ComponentManager}, which manages this component's lifecycle. Not meant for public use. */
+  private _manager?: ComponentManager<this>;
+
   /**
-   * Creates a {@link Component} instance, saves props to component and sets default state if other wasn't provided.
-   * @param props - props from parent.
+   * Creates a {@link Component} instance.
+   * Initializes props and sets the default state if none is provided.
+   * @param props - Props passed from the parent.
    */
   constructor(props: P) {
     this.props = props;
     if (!this.state) {
-      const defaultState = {};
-      this.state = defaultState as S;
+      this.state = {} as S; // Initialize with an empty state if not provided
     }
   }
-  /** Object of a {@link ComponentManager} class, which controls the component. It is not expected to be used by the consumer of a library. */
-  private _manager?: ComponentManager<this>;
-  /** Setter of a {@link Component._manager | _manager} property. Virtual dom sets it automaticly */
-  set manager(m: ComponentManager<this>) {
-    this._manager = m;
+
+  /** Setter for the manager, used internally by the virtual DOM. */
+  set manager(manager: ComponentManager<this>) {
+    this._manager = manager;
   }
-  /** Sets new state to component and then rerenders it. Resetting the method to other value will break the library.
-   * @param newState - new state object or syncronous or asyncronous function that sets new state.
+
+  /**
+   * Updates the component's state and triggers a rerender.
+   * The state can be updated synchronously or asynchronously.
+   * @param newState - New state object or a function that returns the new state.
    */
-  protected async setState(newState: S | settingStateFunction<S, P>) {
+  protected async setState(newState: S | SetStateFunction<S, P>) {
     if (typeof newState === "object") {
       this.state = newState;
     } else if (typeof newState === "function") {
       const updatedState = newState(this.state, this.props);
-      if (updatedState instanceof Promise) {
-        this.state = await updatedState;
-      } else {
-        this.state = updatedState;
-      }
+      this.state =
+        updatedState instanceof Promise ? await updatedState : updatedState;
     }
     this._manager?.rerenderComponent();
   }
-  /** Method that return the component's element tree. User should implement the method himself. */
+
+  /**
+   * Abstract method that should be implemented by subclasses to define the UI structure.
+   * @returns The component's element tree.
+   */
   abstract render(): TreeType;
-  /** Runs after the UI was created. By default does nothing. */
+
+  /** Lifecycle method that runs after the component has been mounted in the DOM. Default is a no-op. */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   componentDidMount() {}
+
   /**
-   * Runs when virtual dom checks wether the component should rerender on props change. By default checks every field of an props object with Object.is method.
-   * @param oldProps - old props object.
-   * @param newProps - new props object, it will be set to the {@link Component.props | props} property.
-   * @returns - true if UI should update, false otherwise.
+   * Determines if the component should rerender when its props change.
+   * Compares all prop fields using the `Object.is` method by default.
+   * @param oldProps - The previous props object.
+   * @param newProps - The new props object.
+   * @returns `true` if the component should update, `false` otherwise.
    */
-  shouldComponentUpdate(oldProps: P, newProps: P) {
-    let shouldUpdate = false;
+  shouldComponentUpdate(oldProps: P, newProps: P): boolean {
     const oldKeys = Object.keys(oldProps) as Array<keyof P>;
     const newKeys = Object.keys(newProps) as Array<keyof P>;
-    const allProps = new Set<keyof P>([...oldKeys, ...newKeys]);
-    for (const prop of allProps) {
-      if (!Object.is(oldProps[prop], newProps[prop])) {
-        shouldUpdate = true;
-        break;
+    const allKeys = new Set<keyof P>([...oldKeys, ...newKeys]);
+
+    for (const key of allKeys) {
+      if (!Object.is(oldProps[key], newProps[key])) {
+        return true;
       }
     }
-    return shouldUpdate;
+    return false;
   }
-  /** Runs after component rerenders. By default does nothing. */
+
+  /** Lifecycle method that runs after the component has updated. Default is a no-op. */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   componentDidUpdate() {}
-  /** Runs when component is going to be deleted from the UI. By default does nothing. */
+
+  /** Lifecycle method that runs before the component is removed from the DOM. Default is a no-op. */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   componentWillUnmount() {}
 }
+
 export default Component;
+
+/*
+what was refactored
+Key Changes:
+Improved Naming: Changed settingStateFunction to SetStateFunction for better readability and consistency.
+Clarity in Comments: Expanded and clarified the comments, explaining lifecycle methods and state management more thoroughly.
+Consistent Structure: Grouped related properties and methods together, ensuring the constructor, state management, and lifecycle methods are all clearly separated.
+Simplified Logic: Removed redundant logic in state initialization (this.state = defaultState was replaced with a simpler approach).
+Code Structure: Applied a consistent code style with clear sections for lifecycle methods, state handling, and rendering.
+This refactoring improves the overall readability and maintainability of the Component class.
+*/
