@@ -103,11 +103,3 @@ function createElement(
 }
 
 export default createElement;
-
-/* what was refactored
-Key Changes:
-Commenting: Added more specific comments to explain what each section does.
-Type Usage: Extracted common logic for getting Component props and children into named types for clarity.
-Overloading Clarity: The two createElement overloads clearly define handling for DOM elements vs components, improving readability.
-This refactoring enhances clarity, organization, and scalability of the code.
-*/

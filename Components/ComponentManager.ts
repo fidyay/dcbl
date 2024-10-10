@@ -61,13 +61,3 @@ class ComponentManager<C extends Component<any, any>> {
 }
 
 export default ComponentManager;
-
-/*
-what was refactored
-Key Changes:
-Comment Clarity: Improved and clarified comments for each property and method to make the purpose more explicit, especially regarding how it interacts with the virtual DOM.
-Consistent Access Modifiers: Used public for all properties explicitly for clarity, though in TypeScript, this is implicit.
-Simplified Method Explanation: Refactored the explanation of rerenderComponent to make its function easier to understand (i.e., rerender logic and lifecycle method).
-Grouping: Logical grouping of class properties and the constructor, making it easier to follow the class structure.
-This refactoring improves the overall readability and structure while maintaining the functionality of the ComponentManager.
-*/

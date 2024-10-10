@@ -37,12 +37,3 @@ class DOMElementTemplate<T extends DOMElementType> {
 }
 
 export default DOMElementTemplate;
-
-/*
-what was refactored
-Key Changes:
-Clarity in Comments: Expanded and clarified comments, ensuring they explain the purpose of each class property and the constructor more thoroughly.
-Simplified Imports: Grouped imports and clarified the type import to reflect its role more clearly.
-Code Structure: Cleaned up unnecessary lines and kept the overall file concise while maintaining clarity.
-This refactored version is now easier to read and understand for anyone working with or maintaining the code.
-*/

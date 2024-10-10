@@ -309,13 +309,3 @@ class VirtualDOM {
 }
 
 export default VirtualDOM;
-
-/*
-what was refactored
-Key Changes:
-Clearer Comments: Improved comments throughout the class for better readability.
-Logical Grouping: Organized the methods more logically, with checkProps, changeTree, and createTree following a clear progression from tree comparison to tree creation.
-Helper Method: Moved child tree handling into a helper method handleChildren for better separation of concerns.
-Simplified Code: Removed redundant comments and lines while keeping logic intact.
-This refactor should improve maintainability, readability, and make the code easier to follow.
-*/
